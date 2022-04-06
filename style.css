@@ -1,0 +1,33 @@
+#game-board {
+    background-color: rgb(65, 71, 224);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: fit-content;
+}
+
+.column {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.column:hover {
+    background-color:aqua;
+}
+
+.pip {
+    height: 50px;
+    width: 50px;
+    margin: 7px;
+    border-radius: 50%;
+    background-color: white;
+    border: 2px solid rgb(0, 0, 0);
+}
+
+#red {
+    background-color: red;
+}
+
+#yellow {
+    background-color: yellow;
+}
