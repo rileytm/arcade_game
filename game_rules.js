@@ -26,7 +26,7 @@ let playerInfo = {
     player2: {
         name: "Stella",
         color: "yellow",
-        computer: true
+        computer: false
     }
 }
 
@@ -63,9 +63,9 @@ function fullColumns(id) {
 
 function selectColumn(choice) {
     let column;
-    let fill;
+    // let fill;
     
-    if (boardState.activePlayer){
+    if (boardState.activePlayer){ //put this later after we know what the pip is and just fill it
         fill = playerInfo.player1.color;
     } else {
         fill = playerInfo.player2.color};
@@ -82,7 +82,7 @@ function selectColumn(choice) {
     
     let x = board[column.id].length;
     let pips = column.children[x];
-    pips.id = fill;
+    pips.id = fill; //change this to a class
     board[column.id].push("X");
     fullColumns(column.id);
     boardState.activePlayer = !boardState.activePlayer;
