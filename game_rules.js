@@ -13,6 +13,8 @@ let boardState = {
         this.gameOver = false;
         addClicks();
         numberColumns();
+        board = [[],[],[],[],[],[],[]];
+        columns = document.getElementsByClassName("column");
     }
 }
 
@@ -51,6 +53,7 @@ function fullColumns(column, id) {
     if (column.length >= 6) {
         boardState.playableColumns.splice(id, 1);
         columns[id].removeEventListener("click", selectColumn);
+        //this function needs to find the index of the column and splice from there, it's splicing the wrong places now
     }
     if (boardState.playableColumns.length === 0) {
         //end the game!!!
@@ -80,7 +83,7 @@ function selectColumn(choice) {
     let pips = column.children[x];
     pips.id = fill;
     board[column.id].push("X");
-    fullColumns(board[column.id], column.id);
+    fullColumns(board[column.id], column.id);//this doesn't neend the board to the functiona global variable
     boardState.activePlayer = !boardState.activePlayer;
     computerMove();
 }

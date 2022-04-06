@@ -1,3 +1,30 @@
+main {
+    display: flex;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#game-stats {
+    background-color: rgb(238, 221, 204);
+    text-align: center;
+    padding: 10px;
+}
+
+input.name {
+    box-shadow: 2px 2px 6px rgb(54, 54, 54);
+    margin: 5px;
+    border: 2px solid rgb(82, 1, 82);
+    border-radius: 4px;
+    padding: 5px;
+}
+
+input[type=submit] {
+    padding: 5px;
+    border: 2px solid rgb(82, 1, 82);
+    background-color: rgb(102, 1, 102);
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+}
+
 #game-board {
     background-color: rgb(65, 71, 224);
     display: flex;
