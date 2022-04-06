@@ -1,13 +1,7 @@
-let button = document.getElementById("random-column");
-button.addEventListener("click", randomColumn);
-
 let columns = document.getElementsByClassName("column");
 let board = [[],[],[],[],[],[],[]];
 let boardState = {
     activePlayer: true,
-    computerPlayer: false,
-    player1: "riley",
-    player2: "stella",
     playableColumns: [],
     gameOver: false,
     reset: function (){
@@ -21,6 +15,19 @@ let boardState = {
         numberColumns();
     }
 }
+
+let playerInfo = {
+    player1: {
+        name: "riley",
+        color: "red"
+    },
+    player2: {
+        name: "Stella",
+        color: "yellow",
+        computer: true
+    }
+}
+
 
 function addClicks(){
     for (let i = 0; i < columns.length; i++){
@@ -52,10 +59,15 @@ function fullColumns(column, id) {
 
 function selectColumn(choice) {
     let column;
-    let fill = "yellow";
+    let fill;
+    
+    if (boardState.activePlayer){
+        fill = playerInfo.player1.color;
+    } else {
+        fill = playerInfo.player2.color};
+
     if (choice.type === "click") {
         column = choice.target;
-        fill = "red";
     } else {
         column = columns[choice];
     }
@@ -70,11 +82,12 @@ function selectColumn(choice) {
     board[column.id].push("X");
     fullColumns(board[column.id], column.id);
     boardState.activePlayer = !boardState.activePlayer;
+    computerMove();
 }
 
-function randomColumn(){
-    let number = Math.floor(Math.random() * boardState.playableColumns.length);
-    selectColumn(boardState.playableColumns[number]);
+function computerMove(){
+    if (playerInfo.player2.computer && !boardState.activePlayer) {
+        let number = Math.floor(Math.random() * boardState.playableColumns.length);
+        selectColumn(boardState.playableColumns[number]);
+    }
 }
-
-//use objects in the arrays that represent the squares to represent each square's state
