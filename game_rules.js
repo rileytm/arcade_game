@@ -49,11 +49,15 @@ function numberColumns(){
 numberColumns();
 
 
-function fullColumns(column, id) {
-    if (column.length >= 6) {
-        boardState.playableColumns.splice(id, 1);
+function fullColumns(id) {
+    console.log(typeof(id));
+    let fullColumn = parseInt(id);
+    console.log(typeof(fullColumn));
+    if (board[fullColumn].length >= 6) {
+        let spot = boardState.playableColumns.indexOf(fullColumn);
+        console.log("spot is " + spot + " and is a " + typeof(spot))
+        boardState.playableColumns.splice(spot, 1);
         columns[id].removeEventListener("click", selectColumn);
-        //this function needs to find the index of the column and splice from there, it's splicing the wrong places now
     }
     if (boardState.playableColumns.length === 0) {
         //end the game!!!
@@ -83,7 +87,7 @@ function selectColumn(choice) {
     let pips = column.children[x];
     pips.id = fill;
     board[column.id].push("X");
-    fullColumns(board[column.id], column.id);//this doesn't neend the board to the functiona global variable
+    fullColumns(column.id);
     boardState.activePlayer = !boardState.activePlayer;
     computerMove();
 }
