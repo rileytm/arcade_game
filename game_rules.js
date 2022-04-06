@@ -50,12 +50,9 @@ numberColumns();
 
 
 function fullColumns(id) {
-    console.log(typeof(id));
     let fullColumn = parseInt(id);
-    console.log(typeof(fullColumn));
     if (board[fullColumn].length >= 6) {
         let spot = boardState.playableColumns.indexOf(fullColumn);
-        console.log("spot is " + spot + " and is a " + typeof(spot))
         boardState.playableColumns.splice(spot, 1);
         columns[id].removeEventListener("click", selectColumn);
     }
