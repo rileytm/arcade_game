@@ -51,11 +51,11 @@ input[type=submit] {
     border: 2px solid rgb(0, 0, 0);
 }
 
-#red {
+.red {
     background-color: red;
 }
 
-#yellow {
+.yellow {
     background-color: yellow;
 }
 

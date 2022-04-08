@@ -33,7 +33,7 @@ let playerInfo = {
 
 function addClicks(){
     for (let i = 0; i < columns.length; i++){
-        columns[i].addEventListener("click", selectColumn);
+        columns[i].addEventListener("click", playerChoice);
         boardState.playableColumns.push(i);
     }
 }
@@ -60,7 +60,7 @@ function isComputer(bool){
 
 function newGame(){
     boardState.reset;
-    
+
     if (!p1Name.value || (!p2Name.value && p2Name.style.visibility === "visible")) {
         p1Name.classList.add("error");
         p2Name.classList.add("error");
@@ -85,67 +85,42 @@ function fullColumns(id){
     if (board[fullColumn].length >= 6) {
         let spot = boardState.playableColumns.indexOf(fullColumn);
         boardState.playableColumns.splice(spot, 1);
-        columns[id].removeEventListener("click", selectColumn);
+        columns[id].removeEventListener("click", playerChoice);
     }
     if (boardState.playableColumns.length === 0) {
         //end the game!!!
     }
 }
 
-function selectColumn(choice){
-    let column;
-    let fill;
-    
-    if (boardState.activePlayer){ //put this later after we know what the pip is and just fill it
-        fill = playerInfo.player1.color;
-    } else {
-        fill = playerInfo.player2.color};
-
-    if (choice.type === "click") {
-        column = choice.target;
-    } else {
-        column = columns[choice];
-    }
-
-    if (column.className === "pip"){
-        column = column.parentElement;
-    }
-    
-    let x = board[column.id].length;
-    let pips = column.children[x];
-    pips.id = fill; //change this to a class
-    board[column.id].push("X");
-    fullColumns(column.id);
-    boardState.activePlayer = !boardState.activePlayer;
-    computerMove();
-}
-
-function computerMove(){
-    if (playerInfo.player2.computer && !boardState.activePlayer) {
-        let number = Math.floor(Math.random() * boardState.playableColumns.length);
-        selectColumn(boardState.playableColumns[number]);
-    }
-}
-
 function playerChoice(click){
     let column = click.target;
-    if (column.className === "pip") {
+    if (column.classList.contains("pip")) {
         column = column.parentElement;
     }
 
     let x = board[column.id].length;
     let pips = column.children[x];
     if (boardState.activePlayer) {
-        pips.classList.add = playerInfo.player1.color;
+        pips.classList.add(playerInfo.player1.color);
         board[column.id].push(true);
     } else {
-        pips.classList.add = playerInfo.player2.color;
+        pips.classList.add(playerInfo.player2.color);
         board[column.id].push(false);
     }
-
+    fullColumns(column.id);
     boardState.activePlayer = !boardState.activePlayer;
 
     if (playerInfo.player2.computer) {
-        //do the computer move
+        computerChoice()
     }
+}
+
+function computerChoice(){
+    let x = Math.floor(Math.random() * boardState.playableColumns.length);
+    let columnNum = boardState.playableColumns[x];
+    let pip = columns[columnNum].children[board[columnNum].length];
+    pip.classList.add(playerInfo.player2.color);
+    board[columnNum].push(false);
+    fullColumns(columnNum)
+    boardState.activePlayer = !boardState.activePlayer;
 }
