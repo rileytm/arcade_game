@@ -58,9 +58,10 @@ function isComputer(bool){
     }
 }
 
-function newGame(){ //this doesn't let users start a game if there's a computer player and no value in p2Name
+function newGame(){
     boardState.reset;
-    if (!p1Name.value || !p2Name.value) {
+    
+    if (!p1Name.value || (!p2Name.value && p2Name.style.visibility === "visible")) {
         p1Name.classList.add("error");
         p2Name.classList.add("error");
         setTimeout( function() {
