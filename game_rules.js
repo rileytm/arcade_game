@@ -1,3 +1,8 @@
+let p1Name = document.getElementById("p1-name");
+let p2Name = document.getElementById("p2-name");
+let onePlayer = document.getElementById("one-player");
+let twoPlayer = document.getElementById("two-player");
+
 let columns = document.getElementsByClassName("column");
 let board = [[],[],[],[],[],[],[]];
 let boardState = {
@@ -6,14 +11,10 @@ let boardState = {
     gameOver: false,
     reset: function (){
         this.activePlayer = true;
-        this.computerPlayer = false;
-        this.player1 = "riley";
-        this.player2 = "stella";
         this.playableColumns = [];
         this.gameOver = false;
         addClicks();
         numberColumns();
-        board = [[],[],[],[],[],[],[]];
         columns = document.getElementsByClassName("column");
     }
 }
@@ -29,7 +30,6 @@ let playerInfo = {
         computer: false
     }
 }
-
 
 function addClicks(){
     for (let i = 0; i < columns.length; i++){
@@ -48,8 +48,38 @@ function numberColumns(){
 
 numberColumns();
 
+function isComputer(bool){
+    if (bool) {
+        p2Name.style.visibility = "hidden";
+        playerInfo.player2.computer = bool;
+    } else {
+        p2Name.style.visibility = "visible";
+        playerInfo.player2.computer = bool;
+    }
+}
 
-function fullColumns(id) {
+function newGame(){ //this doesn't let users start a game if there's a computer player and no value in p2Name
+    boardState.reset;
+    if (!p1Name.value || !p2Name.value) {
+        p1Name.classList.add("error");
+        p2Name.classList.add("error");
+        setTimeout( function() {
+            p1Name.classList.remove("error");
+            p2Name.classList.remove("error");
+        }, 300 )
+    }
+
+    playerInfo.player1.name = p1Name.value;
+
+    if (playerInfo.player2.computer) {
+        playerInfo.player2.name = "The Computer";
+    } else {
+        playerInfo.player2.name = p2Name.value;
+    }
+}
+
+
+function fullColumns(id){
     let fullColumn = parseInt(id);
     if (board[fullColumn].length >= 6) {
         let spot = boardState.playableColumns.indexOf(fullColumn);
@@ -61,9 +91,9 @@ function fullColumns(id) {
     }
 }
 
-function selectColumn(choice) {
+function selectColumn(choice){
     let column;
-    // let fill;
+    let fill;
     
     if (boardState.activePlayer){ //put this later after we know what the pip is and just fill it
         fill = playerInfo.player1.color;
@@ -93,5 +123,28 @@ function computerMove(){
     if (playerInfo.player2.computer && !boardState.activePlayer) {
         let number = Math.floor(Math.random() * boardState.playableColumns.length);
         selectColumn(boardState.playableColumns[number]);
+    }
+}
+
+function playerChoice(click){
+    let column = click.target;
+    if (column.className === "pip") {
+        column = column.parentElement;
+    }
+
+    let x = board[column.id].length;
+    let pips = column.children[x];
+    if (boardState.activePlayer) {
+        pips.classList.add = playerInfo.player1.color;
+        board[column.id].push(true);
+    } else {
+        pips.classList.add = playerInfo.player2.color;
+        board[column.id].push(false);
+    }
+
+    boardState.activePlayer = !boardState.activePlayer;
+
+    if (playerInfo.player2.computer) {
+        //do the computer move
     }
 }

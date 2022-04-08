@@ -58,3 +58,14 @@ input[type=submit] {
 #yellow {
     background-color: yellow;
 }
+
+.error {
+    position: relative;
+    animation: shake .1s linear;
+    animation-iteration-count: 10;
+}
+
+@keyframes shake {
+    0% { left: -10px; }
+    100% { right: -10px; }
+}
