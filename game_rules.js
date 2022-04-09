@@ -9,6 +9,7 @@ let boardState = {
     activePlayer: true,
     playableColumns: [],
     gameOver: false,
+    winCon: 4,
     reset: function (){
         this.activePlayer = true;
         this.playableColumns = [];
@@ -21,11 +22,11 @@ let boardState = {
 
 let playerInfo = {
     player1: {
-        name: "riley",
+        name: "Player 1",
         color: "red"
     },
     player2: {
-        name: "Stella",
+        name: "Player 2",
         color: "yellow",
         computer: false
     }
@@ -36,9 +37,8 @@ function addClicks(){
         columns[i].addEventListener("click", playerChoice);
         boardState.playableColumns.push(i);
     }
+    console.log("clicks added");
 }
-
-addClicks();
 
 function numberColumns(){
     for (let i = 0; i < columns.length; i++) {
@@ -59,7 +59,8 @@ function isComputer(bool){
 }
 
 function newGame(){
-    boardState.reset;
+    console.log("start game");
+    boardState.reset();
 
     if (!p1Name.value || (!p2Name.value && p2Name.style.visibility === "visible")) {
         p1Name.classList.add("error");
@@ -97,17 +98,25 @@ function playerChoice(click){
     if (column.classList.contains("pip")) {
         column = column.parentElement;
     }
-
-    let x = board[column.id].length;
-    let pips = column.children[x];
+    
+    column = parseInt(column.id)
+    let height = board[column].length;
+    let pips = columns[column].children[height];
+    
+    
     if (boardState.activePlayer) {
         pips.classList.add(playerInfo.player1.color);
-        board[column.id].push(true);
+        board[column].push(true);
     } else {
         pips.classList.add(playerInfo.player2.color);
-        board[column.id].push(false);
+        board[column].push(false);
     }
-    fullColumns(column.id);
+
+    if (checkVertical(column, height)) {console.log("vertical win!")};
+    if (goRight(column, height)) {console.log("right win!")};
+    if (goLeft(column, height)) {console.log("left win!")};
+
+    fullColumns(column);
     boardState.activePlayer = !boardState.activePlayer;
 
     if (playerInfo.player2.computer) {
@@ -123,4 +132,37 @@ function computerChoice(){
     board[columnNum].push(false);
     fullColumns(columnNum)
     boardState.activePlayer = !boardState.activePlayer;
+}
+
+
+function checkVertical(columnNum, rowNum){
+    for (let i = 0; i < 4; i++){
+        if (board[columnNum][rowNum - i] === boardState.activePlayer) {}
+        else {return false}
+    }
+    return true;
+}
+
+
+function goRight(columnNum, rowNum){
+    for (let i = 0; i < 4; i++){
+        if (columnNum + i >= board.length){return false}
+
+        if (board[columnNum + i][rowNum] === boardState.activePlayer) {}
+        else {return false}
+    }
+    return true;
+}
+
+function goLeft(columnNum, rowNum){
+    for (let i = 0; i < 4; i++){
+        if (columnNum - i < 0){return false}
+
+        if (board[columnNum - i][rowNum] === boardState.activePlayer) {}
+        else {return false}
+    }
+    return true;
+}
+
+function diagUpRight(columnNum, rowNum){
 }
