@@ -36,6 +36,8 @@ let playerInfo = {
 }
 
 function whoStarts(){
+    document.getElementById("p1-display").classList.remove("active-player");
+    document.getElementById("p2-display").classList.remove("active-player");
     if (Math.floor(Math.random() * 2) === 1){
         boardState.activePlayer = false;
         document.getElementById("p2-display").classList.toggle("active-player");
