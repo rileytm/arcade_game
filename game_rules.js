@@ -16,6 +16,7 @@ let boardState = {
         this.activePlayer = true;
         this.playableColumns = [];
         this.gameOver = false;
+        board = [[],[],[],[],[],[],[]];
         addClicks();
         numberColumns();
         columns = document.getElementsByClassName("column");
@@ -60,9 +61,27 @@ function isComputer(bool){
     }
 }
 
+function clearPips(){
+    for (let c = 0; c < columns.length; c ++){
+        for (let p = 0; p < columns[c].childElementCount; p++){
+            let pip = columns[c].children[p];
+            console.dir(pip);
+            if (pip.classList.contains(playerInfo.player1.color)){
+                pip.classList.remove(playerInfo.player1.color);
+                console.log(`removed red from ${pip}`);
+            }
+            if (pip.classList.contains(playerInfo.player2.color)){
+                pip.classList.remove(playerInfo.player2.color);
+                console.log(`removed yellow from ${pip}`);
+            }
+        }
+    }
+}
+
 function newGame(){
     console.log("start game");
     boardState.reset();
+    clearPips();
 
     if (!p1Name.value || (!p2Name.value && p2Name.style.visibility === "visible")) {
         p1Name.classList.add("error");
@@ -81,7 +100,6 @@ function newGame(){
         playerInfo.player2.name = p2Name.value;
     }
 }
-
 
 function fullColumns(id){
     let fullColumn = parseInt(id);
