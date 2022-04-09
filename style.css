@@ -4,7 +4,7 @@ main {
 }
 
 #game-stats {
-    background-color: rgb(238, 221, 204);
+    background-color: rgb(84, 190, 204);
     text-align: center;
     padding: 10px;
 }
@@ -31,6 +31,14 @@ input[type=submit] {
     flex-direction: row;
     justify-content: center;
     width: fit-content;
+}
+
+.hidden {
+    display: none;
+}
+
+.active-player {
+    text-shadow: 4px 4px 4px white;
 }
 
 .column {

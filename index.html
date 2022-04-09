@@ -11,15 +11,27 @@
     <main>
         <div id="game-stats">
             <h1>Connect Four</h1>
-            <h3>Number of Players</h3>
-            <input type="radio" id="one-player" name="player-selection" onclick="isComputer(true)">
-            <label for="one-player">One Player</label>
-            <input type="radio" id="two-player" name="player-selection" onclick="isComputer(false)">
-            <label for="two-player">Two Players</label>
-            <h3>Player Names:</h3>
-            <input type="text" class="name" id="p1-name" placeholder="Player 1"><br>
-            <input type="text" class="name" id="p2-name" placeholder="Player 2"><br>
-            <input type="submit" value="Start New Game" onclick="newGame()">
+            <div id="game-setup">
+                <h3>Number of Players</h3>
+                <input type="radio" id="one-player" name="player-selection" onclick="isComputer(true)">
+                <label for="one-player">One Player</label>
+                <input type="radio" id="two-player" name="player-selection" onclick="isComputer(false)">
+                <label for="two-player">Two Players</label>
+                <h3>Player Names:</h3>
+                <input type="text" class="name" id="p1-name" placeholder="Player 1"><br>
+                <input type="text" class="name" id="p2-name" placeholder="Player 2"><br>
+                <input type="submit" value="Start New Game" onclick="newGame()">
+            </div>
+            <div id="active-game" class="hidden">
+                <h2 class="player-title" id="p1-display"></h2>
+                <h3>VS</h3>
+                <h2 class="player-title" id="p2-display"></h2>
+                <button class="restart" onclick="startOver()">Start Over</button>
+            </div>
+            <div id="win-state" class="hidden">
+                <h2 id="winning-player"></h2>
+                <button class="restart" onclick="startOver()">Start Over</button>
+            </div>
         </div>
         <div id="game-board">
             <div class="column">

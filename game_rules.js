@@ -35,6 +35,19 @@ let playerInfo = {
     }
 }
 
+function whoStarts(){
+    if (Math.floor(Math.random() * 2) === 1){
+        boardState.activePlayer = false;
+        document.getElementById("p2-display").classList.toggle("active-player");
+    } else {
+        document.getElementById("p1-display").classList.toggle("active-player");
+    }
+
+    if (!boardState.activePlayer && playerInfo.player2.computer){
+        computerChoice()
+    }
+}
+
 function addClicks(){
     for (let i = 0; i < columns.length; i++){
         columns[i].addEventListener("click", playerChoice);
@@ -48,8 +61,6 @@ function numberColumns(){
         columns[i].id = i;
     }
 }
-
-numberColumns();
 
 function isComputer(bool){
     if (bool) {
@@ -65,23 +76,20 @@ function clearPips(){
     for (let c = 0; c < columns.length; c ++){
         for (let p = 0; p < columns[c].childElementCount; p++){
             let pip = columns[c].children[p];
-            console.dir(pip);
             if (pip.classList.contains(playerInfo.player1.color)){
                 pip.classList.remove(playerInfo.player1.color);
-                console.log(`removed red from ${pip}`);
             }
             if (pip.classList.contains(playerInfo.player2.color)){
                 pip.classList.remove(playerInfo.player2.color);
-                console.log(`removed yellow from ${pip}`);
             }
         }
     }
 }
 
 function newGame(){
-    console.log("start game");
     boardState.reset();
     clearPips();
+    whoStarts();
 
     if (!p1Name.value || (!p2Name.value && p2Name.style.visibility === "visible")) {
         p1Name.classList.add("error");
@@ -99,6 +107,16 @@ function newGame(){
     } else {
         playerInfo.player2.name = p2Name.value;
     }
+    document.getElementById("game-setup").classList.add("hidden");
+    document.getElementById("active-game").classList.remove("hidden");
+    document.getElementById("p1-display").innerText = playerInfo.player1.name;
+    document.getElementById("p2-display").innerText = playerInfo.player2.name;
+}
+
+function startOver(){
+    document.getElementById("game-setup").classList.remove("hidden");
+    document.getElementById("active-game").classList.add("hidden");
+    document.getElementById("win-state").classList.add("hidden");
 }
 
 function fullColumns(id){
@@ -109,7 +127,9 @@ function fullColumns(id){
         columns[id].removeEventListener("click", playerChoice);
     }
     if (boardState.playableColumns.length === 0) {
-        //end the game!!!
+        document.getElementById("win-state").classList.remove("hidden");
+        document.getElementById("active-game").classList.add("hidden");
+        document.getElementById("winning-player").innerText = "NOBODY WINS!!!!";
     }
 }
 
@@ -132,15 +152,14 @@ function playerChoice(click){
         board[column].push(false);
     }
 
-    if (checkVertical(column, height)) {console.log("vertical win!")};
-    if (checkHorizontal(column, height)) {console.log("right win!")};
-    if (diagDownRight(column, height)) {console.log("diag win!")};
-
+    iWin(column, height);
     fullColumns(column);
     boardState.activePlayer = !boardState.activePlayer;
+    document.getElementById("p1-display").classList.toggle("active-player");
+    document.getElementById("p2-display").classList.toggle("active-player");
 
     if (playerInfo.player2.computer) {
-        computerChoice()
+        setTimeout(computerChoice, 1000);
     }
 }
 
@@ -152,6 +171,8 @@ function computerChoice(){
     board[columnNum].push(false);
     fullColumns(columnNum)
     boardState.activePlayer = !boardState.activePlayer;
+    document.getElementById("p1-display").classList.toggle("active-player");
+    document.getElementById("p2-display").classList.toggle("active-player");
 }
 
 
@@ -202,5 +223,21 @@ function diagUpRight(columnNum, rowNum){
         columnNum = columnNum - 1;
         rowNum = rowNum - 1;
         if (columnNum < 0 || rowNum < 0) {return false}
+    }
+}
+
+function iWin(columnNum, rowNum){
+    if (checkVertical(columnNum, rowNum) ||
+    checkHorizontal(columnNum, rowNum) ||
+    diagDownRight(columnNum, rowNum) ||
+    diagUpRight(columnNum, rowNum)){
+        document.getElementById("active-game").classList.add("hidden");
+        document.getElementById("win-state").classList.remove("hidden");
+        let winner = playerInfo.player1.name;
+        if (!boardState.activePlayer){winner = playerInfo.player2.name}
+        document.getElementById("winning-player").innerText = `${winner} Wins The Game!!`;
+        for (let i = 0; i < columns.length; i++){
+            columns[i].removeEventListener("click", playerChoice);
+        }
     }
 }
