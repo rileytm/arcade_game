@@ -10,6 +10,8 @@ let boardState = {
     playableColumns: [],
     gameOver: false,
     winCon: 4,
+    rows: 6,
+    columns: 7,
     reset: function (){
         this.activePlayer = true;
         this.playableColumns = [];
@@ -113,8 +115,8 @@ function playerChoice(click){
     }
 
     if (checkVertical(column, height)) {console.log("vertical win!")};
-    if (goRight(column, height)) {console.log("right win!")};
-    if (goLeft(column, height)) {console.log("left win!")};
+    if (checkHorizontal(column, height)) {console.log("right win!")};
+    if (diagDownRight(column, height)) {console.log("diag win!")};
 
     fullColumns(column);
     boardState.activePlayer = !boardState.activePlayer;
@@ -143,26 +145,44 @@ function checkVertical(columnNum, rowNum){
     return true;
 }
 
+function checkHorizontal(columnNum, rowNum){
+    for (let run = 0; run < 4; run++){
+        for (let i = 0; i < 4; i++){
+            if (columnNum + i >= board.length){break}
 
-function goRight(columnNum, rowNum){
-    for (let i = 0; i < 4; i++){
-        if (columnNum + i >= board.length){return false}
-
-        if (board[columnNum + i][rowNum] === boardState.activePlayer) {}
-        else {return false}
+            if (board[columnNum + i][rowNum] === boardState.activePlayer) {}
+            else {break};
+            if (i === 3) {return true};
+        }
+        columnNum = columnNum - 1;
+        if (columnNum < 0) {return false}
     }
-    return true;
 }
 
-function goLeft(columnNum, rowNum){
-    for (let i = 0; i < 4; i++){
-        if (columnNum - i < 0){return false}
-
-        if (board[columnNum - i][rowNum] === boardState.activePlayer) {}
-        else {return false}
+function diagDownRight(columnNum, rowNum){
+    for (let run = 0; run < 4; run++){
+        for (let i = 0; i < 4; i++){
+            if (columnNum + i >= board.length || rowNum - i < 0){break}
+            if (board[columnNum + i][rowNum - i] === boardState.activePlayer) {}
+            else {break};
+            if (i === 3) {return true};
+        }
+        columnNum = columnNum - 1;
+        rowNum = rowNum + 1;
+        if (columnNum < 0 || rowNum > boardState.rows) {return false}
     }
-    return true;
 }
 
 function diagUpRight(columnNum, rowNum){
+    for (let run = 0; run < 4; run++){
+        for (let i = 0; i < 4; i++){
+            if (columnNum + i >= board.length || rowNum + i > boardState.rows){break}
+            if (board[columnNum + i][rowNum + i] === boardState.activePlayer) {}
+            else {break};
+            if (i === 3) {return true};
+        }
+        columnNum = columnNum - 1;
+        rowNum = rowNum - 1;
+        if (columnNum < 0 || rowNum < 0) {return false}
+    }
 }
