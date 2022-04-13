@@ -90,12 +90,6 @@ function clearPips(){
 }
 
 function newGame(){
-    boardState.reset();
-    clearPips();
-    whoStarts();
-
-    playerInfo.player1.name = p1Name.value;
-
     if (playerInfo.player2.computer) {
         playerInfo.player2.name = "The Computer";
     } else {
@@ -110,6 +104,10 @@ function newGame(){
             p2Name.classList.remove("error");
         }, 300 )
     } else {
+        boardState.reset();
+        clearPips();
+        whoStarts();
+        playerInfo.player1.name = p1Name.value;
         document.getElementById("game-setup").classList.add("hidden");
         document.getElementById("active-game").classList.remove("hidden");
         document.getElementById("p1-display").innerText = playerInfo.player1.name;
