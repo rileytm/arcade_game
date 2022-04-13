@@ -19,6 +19,7 @@ let boardState = {
         board = [[],[],[],[],[],[],[]];
         addClicks();
         numberColumns();
+        clearPips();
         columns = document.getElementsByClassName("column");
     }
 }
@@ -93,15 +94,6 @@ function newGame(){
     clearPips();
     whoStarts();
 
-    if (!p1Name.value || (!p2Name.value && p2Name.style.visibility === "visible")) {
-        p1Name.classList.add("error");
-        p2Name.classList.add("error");
-        setTimeout( function() {
-            p1Name.classList.remove("error");
-            p2Name.classList.remove("error");
-        }, 300 )
-    }
-
     playerInfo.player1.name = p1Name.value;
 
     if (playerInfo.player2.computer) {
@@ -109,16 +101,27 @@ function newGame(){
     } else {
         playerInfo.player2.name = p2Name.value;
     }
-    document.getElementById("game-setup").classList.add("hidden");
-    document.getElementById("active-game").classList.remove("hidden");
-    document.getElementById("p1-display").innerText = playerInfo.player1.name;
-    document.getElementById("p2-display").innerText = playerInfo.player2.name;
+
+    if (!p1Name.value || (!p2Name.value && p2Name.style.visibility === "visible")) {
+        p1Name.classList.add("error");
+        p2Name.classList.add("error");
+        setTimeout( function() {
+            p1Name.classList.remove("error");
+            p2Name.classList.remove("error");
+        }, 300 )
+    } else {
+        document.getElementById("game-setup").classList.add("hidden");
+        document.getElementById("active-game").classList.remove("hidden");
+        document.getElementById("p1-display").innerText = playerInfo.player1.name;
+        document.getElementById("p2-display").innerText = playerInfo.player2.name;
+    }
 }
 
 function startOver(){
     document.getElementById("game-setup").classList.remove("hidden");
     document.getElementById("active-game").classList.add("hidden");
     document.getElementById("win-state").classList.add("hidden");
+    boardState.reset();
 }
 
 function fullColumns(id){
@@ -161,7 +164,7 @@ function playerChoice(click){
     document.getElementById("p2-display").classList.toggle("active-player");
 
     if (playerInfo.player2.computer) {
-        setTimeout(computerChoice, 1000);
+        computerChoice();
     }
 }
 
@@ -177,11 +180,17 @@ function computerChoice(){
     document.getElementById("p2-display").classList.toggle("active-player");
 }
 
+// let computerWinningMoves = [];
 
 function checkVertical(columnNum, rowNum){
     for (let i = 0; i < 4; i++){
         if (board[columnNum][rowNum - i] === boardState.activePlayer) {}
-        else {return false}
+        else {
+            // if (i === 4 && playerInfo.player2.computer){
+            //     let spot = [columnNum, rowNum - i];
+            //     computerWinningMoves.push(spot);
+            // }
+        return false}
     }
     return true;
 }
